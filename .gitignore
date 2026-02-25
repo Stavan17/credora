@@ -1,0 +1,75 @@
+############################
+# Global
+############################
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.log
+
+# IDE / editor
+.vscode/
+.idea/
+*.code-workspace
+
+############################
+# Python / FastAPI backend
+############################
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.env.* 
+
+# Packaging / build
+build/
+dist/
+*.egg-info/
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MyPy / lint
+.mypy_cache/
+.pytype/
+.dmypy.json
+.pyre/
+
+# Local uploads & generated files
+uploads/
+*.sqlite3
+
+############################
+# Node / React frontend
+############################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+credora-frontend/build/
+credora-frontend/dist/
+
+# Environment files
+credora-frontend/.env
+credora-frontend/.env.* 
+
+############################
+# Misc
+############################
+# Logs
+logs/
+*.log
+
+# Mac trash
+.Spotlight-V100
+.Trashes
