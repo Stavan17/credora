@@ -11,6 +11,7 @@ import { ArrowLeft, CheckCircle, XCircle, AlertTriangle, Loader, TrendingUp, Shi
 const ApplicationResult = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [application, setApplication] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

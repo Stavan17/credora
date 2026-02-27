@@ -1,4 +1,5 @@
 import random
+import re
 from typing import Dict, List
 
 class FraudService:
@@ -32,7 +33,91 @@ class FraudService:
             monthly_income = income / 12
             if monthly_income > 0 and monthly_payment > monthly_income * 0.7:
                 flags.append("HIGH_PAYMENT_TO_INCOME")
-        
+
+        # ------- Document & OCR-based rules -------
+        if documents:
+            doc_text_by_type = {}
+            for doc in documents:
+                text = getattr(doc, "ocr_extracted_text", None) or ""
+                doc_text_by_type[doc.document_type] = text.lower()
+
+            # Quick checks: missing or very weak OCR text
+            required_types = ["identity_proof", "address_proof", "income_proof", "photo"]
+            for doc_type in required_types:
+                if doc_type not in doc_text_by_type:
+                    flags.append(f"MISSING_{doc_type.upper()}")
+                else:
+                    if len(doc_text_by_type[doc_type]) < 40:
+                        flags.append(f"DOC_OCR_WEAK_{doc_type.upper()}")
+
+            # Identity proof name mismatch
+            full_name = (application_data.get("user_full_name") or "").lower()
+            identity_text = doc_text_by_type.get("identity_proof", "")
+            if full_name and identity_text:
+                name_parts = [p for p in full_name.split() if len(p) > 2]
+                if name_parts and not all(part in identity_text for part in name_parts):
+                    flags.append("IDENTITY_NAME_MISMATCH")
+
+            # Keyword expectations per document type
+            expected_keywords = {
+                "identity_proof": ["aadhar", "aadhaar", "passport", "license", "licence", "pan", "govt of india", "government of india"],
+                "address_proof": ["address", "pin code", "pincode", "road", "street", "city", "state"],
+                "income_proof": ["salary", "income", "ctc", "gross", "net pay", "payslip", "pay slip", "annual income", "form 16", "itr"],
+            }
+            marksheet_keywords = ["marksheet", "mark sheet", "semester", "university", "examination", "exam", "cgpa", "sgpa"]
+
+            for doc_type, text in doc_text_by_type.items():
+                if doc_type in expected_keywords:
+                    has_expected = any(k in text for k in expected_keywords[doc_type])
+                    has_marksheet = any(k in text for k in marksheet_keywords)
+                    if not has_expected and has_marksheet:
+                        flags.append(f"POSSIBLE_MARKSHEET_IN_{doc_type.upper()}")
+                    elif not has_expected:
+                        flags.append(f"UNEXPECTED_CONTENT_IN_{doc_type.upper()}")
+
+            # Same document reused for multiple proofs (very similar OCR text)
+            types = list(doc_text_by_type.keys())
+            for i in range(len(types)):
+                for j in range(i + 1, len(types)):
+                    t1, t2 = types[i], types[j]
+                    text1, text2 = doc_text_by_type[t1], doc_text_by_type[t2]
+                    if not text1 or not text2:
+                        continue
+                    words1 = set(text1.split())
+                    words2 = set(text2.split())
+                    if len(words1) < 20 or len(words2) < 20:
+                        continue
+                    overlap = len(words1 & words2) / max(len(words1), len(words2))
+                    if overlap > 0.8:
+                        flags.append("SAME_DOCUMENT_USED_FOR_MULTIPLE_PROOFS")
+                        break
+                else:
+                    continue
+                break
+
+            # Income proof vs declared income
+            income_text = ""
+            for key in ["income_proof", "salary_slip", "bank_statement"]:
+                if key in doc_text_by_type:
+                    income_text += " " + doc_text_by_type[key]
+
+            if income_text and income > 0:
+                raw_numbers = re.findall(r"\d[\d,]{4,}", income_text)
+                parsed_numbers = []
+                for n in raw_numbers:
+                    try:
+                        parsed_numbers.append(float(n.replace(",", "")))
+                    except ValueError:
+                        continue
+
+                if parsed_numbers:
+                    inferred_income = max(parsed_numbers)
+                    ratio = inferred_income / income if income else 0
+                    if ratio > 1.5:
+                        flags.append("INCOME_DOC_HIGHER_THAN_DECLARED")
+                    elif ratio < 0.5:
+                        flags.append("INCOME_DOC_LOWER_THAN_DECLARED")
+
         return flags
     
     def detect_fraud(self, application_data: Dict, documents: List) -> Dict:
@@ -40,12 +125,12 @@ class FraudService:
         
         fraud_flags = self.check_rule_based_fraud(application_data, documents)
         
-        # Calculate base fraud score
-        base_score = random.uniform(0.1, 0.3)
+        # Calculate base fraud score (deterministic, primarily driven by flags and CIBIL)
+        base_score = 0.1
         
-        # Adjust based on flags
+        # Adjust based on number of flags
         if len(fraud_flags) > 0:
-            base_score += len(fraud_flags) * 0.15
+            base_score += len(fraud_flags) * 0.12
         
         # Adjust based on CIBIL score (lower score = higher fraud risk)
         cibil_score = application_data.get('cibil_score', 300)

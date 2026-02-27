@@ -15,6 +15,7 @@ from app.services.ml_service import ml_service
 from app.services.fraud_service import fraud_service
 from app.services.risk_service import risk_service
 from app.services.cibil_service import cibil_service
+from app.services.ocr_service import ocr_service
 import traceback
 import json
 
@@ -115,7 +116,7 @@ async def process_application(
         if not application:
             raise HTTPException(status_code=404, detail="Application not found")
         
-        # Prepare data for ML model
+        # Prepare data for ML & fraud models
         app_data = {
             'no_of_dependents': application.no_of_dependents,
             'income_annum': application.income_annum,
@@ -127,7 +128,9 @@ async def process_application(
             'luxury_assets_value': application.luxury_assets_value,
             'bank_asset_value': application.bank_asset_value,
             'education': application.education,
-            'self_employed': application.self_employed
+            'self_employed': application.self_employed,
+            'user_full_name': application.user.full_name if application.user else None,
+            'user_email': application.user.email if application.user else None
         }
         
         print(f"Processing application {application_id} with data: {app_data}")
@@ -141,9 +144,12 @@ async def process_application(
             print(traceback.format_exc())
             raise HTTPException(status_code=500, detail=f"ML prediction failed: {str(e)}")
         
-        # 2. Fraud Detection
+        # 2. Fraud Detection (uses application data + OCR'd documents)
         try:
-            fraud_result = fraud_service.detect_fraud(app_data, [])
+            documents = db.query(Document).filter(
+                Document.application_id == application.id
+            ).all()
+            fraud_result = fraud_service.detect_fraud(app_data, documents)
             print(f"✅ Fraud detection result: {fraud_result}")
         except Exception as e:
             print(f"❌ Error in fraud service: {str(e)}")
@@ -251,13 +257,19 @@ async def upload_documents(
             # Save file
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
+
+            # Extract OCR text for supported types (images & PDFs)
+            ocr_text = None
+            if file_extension.lower() in [".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".pdf"]:
+                ocr_text = ocr_service.extract_text(file_path)
             
             # Create document record
             document = Document(
                 application_id=application_id,
                 document_type=doc_type,
                 file_name=file.filename,
-                file_path=file_path
+                file_path=file_path,
+                ocr_extracted_text=ocr_text
             )
             db.add(document)
             uploaded_docs.append({
