@@ -252,7 +252,7 @@ async def upload_documents(
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             file_extension = os.path.splitext(file.filename)[1]
             new_filename = f"{doc_type}_{timestamp}{file_extension}"
-            file_path = os.path.join(app_dir, new_filename)
+            file_path = os.path.abspath(os.path.join(app_dir, new_filename))
             
             # Save file
             with open(file_path, "wb") as buffer:
