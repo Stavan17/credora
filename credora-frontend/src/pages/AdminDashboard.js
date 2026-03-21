@@ -127,69 +127,69 @@ const AdminDashboard = () => {
       {/* Stats Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-blue-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Applications</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Applications</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
               </div>
-              <div className="p-3 bg-blue-100 rounded-xl">
-                <FileText className="text-blue-600" size={24} />
+              <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-xl">
+                <FileText className="text-blue-600 dark:text-blue-400" size={24} />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Pending</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.pending}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Pending</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.pending}</p>
               </div>
-              <div className="p-3 bg-yellow-100 rounded-xl">
-                <Clock className="text-yellow-600" size={24} />
+              <div className="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-xl">
+                <Clock className="text-yellow-600 dark:text-yellow-400" size={24} />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-purple-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Under Review</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.underReview}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Under Review</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.underReview}</p>
               </div>
-              <div className="p-3 bg-purple-100 rounded-xl">
-                <Eye className="text-purple-600" size={24} />
+              <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-xl">
+                <Eye className="text-purple-600 dark:text-purple-400" size={24} />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-green-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Approved</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.approved}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Approved</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.approved}</p>
               </div>
-              <div className="p-3 bg-green-100 rounded-xl">
-                <Check className="text-green-600" size={24} />
+              <div className="p-3 bg-green-100 dark:bg-green-900 rounded-xl">
+                <Check className="text-green-600 dark:text-green-400" size={24} />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-red-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Rejected</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.rejected}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Rejected</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.rejected}</p>
               </div>
-              <div className="p-3 bg-red-100 rounded-xl">
-                <X className="text-red-600" size={24} />
+              <div className="p-3 bg-red-100 dark:bg-red-900 rounded-xl">
+                <X className="text-red-600 dark:text-red-400" size={24} />
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-6">
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
             <div className="flex flex-wrap gap-2">
               {['ALL', 'PENDING', 'UNDER_REVIEW', 'APPROVED', 'REJECTED'].map((status) => (
@@ -199,7 +199,7 @@ const AdminDashboard = () => {
                   className={`px-4 py-2 rounded-lg font-medium transition ${
                     filter === status
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                   }`}
                 >
                   {status.replace('_', ' ')}
@@ -213,22 +213,22 @@ const AdminDashboard = () => {
                 placeholder="Search applications..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
             </div>
           </div>
         </div>
 
         {/* Applications Table */}
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             {loading ? (
               <div className="p-12 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading applications...</p>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 outline-none mx-auto mb-4"></div>
+                <p className="text-gray-600 dark:text-gray-400">Loading applications...</p>
               </div>
             ) : filteredApplications.length === 0 ? (
-              <div className="p-12 text-center text-gray-500">
+              <div className="p-12 text-center text-gray-500 dark:text-gray-400">
                 <FileText className="mx-auto mb-4 text-gray-400" size={48} />
                 <p>No applications found</p>
               </div>
@@ -246,17 +246,17 @@ const AdminDashboard = () => {
                     <th className="px-6 py-4 text-left text-sm font-semibold">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {filteredApplications.map((app) => (
-                    <tr key={app.id} className="hover:bg-blue-50 transition">
-                      <td className="px-6 py-4 text-sm font-bold text-gray-900">#{app.id}</td>
+                    <tr key={app.id} className="hover:bg-blue-50 dark:hover:bg-gray-700 transition">
+                      <td className="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">#{app.id}</td>
                       <td className="px-6 py-4">
                         <div>
-                          <p className="text-sm font-medium text-gray-900">{app.user?.full_name || 'N/A'}</p>
-                          <p className="text-xs text-gray-500">{app.user?.email || 'N/A'}</p>
+                          <p className="text-sm font-medium text-gray-900 dark:text-white">{app.user?.full_name || 'N/A'}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">{app.user?.email || 'N/A'}</p>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-gray-900">
+                      <td className="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-white">
                         ₹{app.loan_amount?.toLocaleString()}
                       </td>
                       <td className="px-6 py-4">

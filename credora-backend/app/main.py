@@ -15,7 +15,7 @@ from app.models.loan_application import LoanApplication
 Base.metadata.create_all(bind=engine)
 
 # Import routers AFTER models
-from app.api import auth, loan
+from app.api import auth, loan, websocket
 
 app = FastAPI(
     title="Credora API",
@@ -52,6 +52,7 @@ else:
 # Include routers
 app.include_router(auth.router)
 app.include_router(loan.router)
+app.include_router(websocket.router)
 
 @app.get("/")
 async def root():
@@ -78,6 +79,10 @@ async def health_check():
 # Optional: Add startup event to verify configuration
 @app.on_event("startup")
 async def startup_event():
+    # Start the background task scheduler
+    from app.tasks.cleanup import scheduler
+    scheduler.start()
+    
     print("\n" + "="*60)
     print("🚀 Credora API Starting Up")
     print("="*60)
@@ -90,4 +95,7 @@ async def startup_event():
 # Optional: Add shutdown event
 @app.on_event("shutdown")
 async def shutdown_event():
+    # Stop scheduler safely
+    from app.tasks.cleanup import scheduler
+    scheduler.shutdown()
     print("\n👋 Credora API Shutting Down\n")

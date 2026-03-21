@@ -19,7 +19,7 @@ const LanguageToggle = () => {
 
   return (
     <div className="relative group">
-      <button className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+      <button className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors">
         <Globe size={20} className="text-gray-600 dark:text-gray-300" />
         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
           {currentLang.flag} {currentLang.name}
@@ -31,7 +31,7 @@ const LanguageToggle = () => {
           <button
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
-            className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors ${
+            className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors ${
               i18n.language === lang.code
                 ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                 : 'text-gray-700 dark:text-gray-300'

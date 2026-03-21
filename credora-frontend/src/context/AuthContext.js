@@ -30,9 +30,9 @@ export const AuthProvider = ({ children }) => {
       
       // Create user object with admin status
       const userData = {
-        email: response.email || credentials.email,
-        full_name: response.full_name || response.name,
-        is_admin: response.is_admin || false  // ← Store admin status
+        email: response.user?.email || response.email || credentials.email,
+        full_name: response.user?.full_name || response.full_name || credentials.username,
+        is_admin: response.user?.is_admin || response.is_admin || false
       };
       
       // Store in localStorage
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       // Update state
       setUser(userData);
       
-      return response;
+      return userData;
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       // Update state
       setUser(newUser);
       
-      return response;
+      return newUser;
     } catch (error) {
       console.error('Register error:', error);
       throw error;

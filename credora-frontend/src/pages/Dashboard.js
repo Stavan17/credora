@@ -5,6 +5,7 @@ import { loanService } from '../services/loanService';
 import { showToast } from '../utils/toast';
 import { exportApplicationToPDF } from '../utils/pdfExport';
 import DarkModeToggle from '../components/DarkModeToggle';
+import { wsService } from '../utils/websocket';
 import { FileText, TrendingUp, LogOut, PlusCircle, AlertCircle, Clock, Download } from 'lucide-react';
 
 const Dashboard = () => {
@@ -16,6 +17,22 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchApplications();
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      wsService.connect(token);
+    }
+
+    const unsubscribe = wsService.subscribe('message', (data) => {
+      if (data.type === 'APPLICATION_UPDATE') {
+        showToast.info(data.message || `Application #${data.application_id} updated: ${data.status}`);
+        fetchApplications();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const fetchApplications = async () => {
@@ -48,7 +65,7 @@ const Dashboard = () => {
       case 'MANUAL_REVIEW':
         return 'bg-orange-100 text-orange-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100';
     }
   };
 
@@ -99,14 +116,14 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <FileText className="text-blue-600" size={24} />
+              <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                <FileText className="text-blue-600 dark:text-blue-400" size={24} />
               </div>
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Total Applications</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Total</p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">{applications.length}</p>
               </div>
             </div>
@@ -146,9 +163,23 @@ const Dashboard = () => {
                 <Clock className="text-blue-600 dark:text-blue-400" size={24} />
               </div>
               <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Under Review</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Review</p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {applications.filter(app => app.status === 'UNDER_REVIEW').length}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-red-100 dark:bg-red-900 rounded-lg">
+                <AlertCircle className="text-red-600 dark:text-red-400" size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Rejected</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {applications.filter(app => app.status === 'REJECTED').length}
                 </p>
               </div>
             </div>
@@ -197,7 +228,7 @@ const Dashboard = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {applications.map((app) => (
-                    <tr key={app.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <tr key={app.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 dark:hover:bg-gray-700">
                       <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">#{app.id}</td>
                       <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">₹{app.loan_amount?.toLocaleString() || 0}</td>
                       <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">₹{app.income_annum?.toLocaleString() || 0}</td>
@@ -223,10 +254,10 @@ const Dashboard = () => {
                                'Under Review'}
                             </span>
                           ) : (
-                            <span className="text-gray-400 dark:text-gray-500 text-xs">Processing...</span>
+                            <span className="text-gray-400 dark:text-gray-500 dark:text-gray-400 text-xs">Processing...</span>
                           )
                         ) : (
-                          <span className="text-gray-400 dark:text-gray-500 text-xs">Not yet analyzed</span>
+                          <span className="text-gray-400 dark:text-gray-500 dark:text-gray-400 text-xs">Not yet analyzed</span>
                         )}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">
@@ -239,7 +270,7 @@ const Dashboard = () => {
                             {(app.approval_probability * 100).toFixed(2)}%
                           </span>
                         ) : (
-                          <span className="text-gray-400 dark:text-gray-500">-</span>
+                          <span className="text-gray-400 dark:text-gray-500 dark:text-gray-400">-</span>
                         )}
                       </td>
                       <td className="px-6 py-4">
@@ -252,7 +283,7 @@ const Dashboard = () => {
                           </button>
                           <button
                             onClick={() => handleExportPDF(app)}
-                            className="p-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                            className="p-1 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:text-gray-100 dark:hover:text-gray-200"
                             title="Export to PDF"
                           >
                             <Download size={16} />

@@ -73,26 +73,26 @@ const LoanApplication = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white dark:bg-gray-800 shadow">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-4">
           <button
             onClick={() => navigate('/dashboard')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition"
+            className="p-2 hover:bg-gray-100 dark:bg-gray-800 rounded-lg transition"
           >
             <ArrowLeft size={24} />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">New Loan Application</h1>
-            <p className="text-sm text-gray-600">Fill in all required details below</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">New Loan Application</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Fill in all required details below</p>
           </div>
         </div>
       </header>
 
       {/* Form */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-xl shadow p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-8">
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
               <AlertCircle size={20} />
@@ -103,12 +103,12 @@ const LoanApplication = () => {
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Personal Information */}
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <span>Personal Information</span>
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Number of Dependents *
                   </label>
                   <select
@@ -128,7 +128,7 @@ const LoanApplication = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Education *
                   </label>
                   <select
@@ -151,7 +151,7 @@ const LoanApplication = () => {
                     onChange={handleChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label className="ml-2 block text-sm text-gray-700">
+                  <label className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                     Self Employed
                   </label>
                 </div>
@@ -160,13 +160,13 @@ const LoanApplication = () => {
 
             {/* Financial Information */}
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <DollarSign size={20} />
                 <span>Financial Information</span>
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Annual Income (₹) *
                   </label>
                   <input
@@ -180,11 +180,11 @@ const LoanApplication = () => {
                     min="0"
                     step="1000"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Your yearly income</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Your yearly income</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Loan Amount (₹) *
                   </label>
                   <input
@@ -198,11 +198,11 @@ const LoanApplication = () => {
                     min="0"
                     step="10000"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Amount you want to borrow</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Amount you want to borrow</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Loan Term (Years) *
                   </label>
                   <select
@@ -227,13 +227,13 @@ const LoanApplication = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     CIBIL Score
                   </label>
-                  <div className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 flex items-center gap-2">
+                  <div className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center gap-2">
                     <div className="flex-1">
-                      <p className="text-sm text-gray-600">Will be automatically fetched</p>
-                      <p className="text-xs text-gray-500 mt-1">Credit score retrieved from CIBIL database</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Will be automatically fetched</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Credit score retrieved from CIBIL database</p>
                     </div>
                     <div className="text-blue-600">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,15 +247,15 @@ const LoanApplication = () => {
 
             {/* Asset Values */}
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-2 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
                 <Building2 size={20} />
                 <span>Asset Information</span>
               </h2>
-              <p className="text-sm text-gray-600 mb-4">Optional - Enter 0 if you don't have these assets</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Optional - Enter 0 if you don't have these assets</p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                     <Home size={16} />
                     Residential Assets Value (₹)
                   </label>
@@ -269,11 +269,11 @@ const LoanApplication = () => {
                     min="0"
                     step="10000"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Value of residential properties</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Value of residential properties</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                     <Briefcase size={16} />
                     Commercial Assets Value (₹)
                   </label>
@@ -287,11 +287,11 @@ const LoanApplication = () => {
                     min="0"
                     step="10000"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Value of commercial properties</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Value of commercial properties</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                     <Gem size={16} />
                     Luxury Assets Value (₹)
                   </label>
@@ -305,11 +305,11 @@ const LoanApplication = () => {
                     min="0"
                     step="10000"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Jewelry, vehicles, art, etc.</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Jewelry, vehicles, art, etc.</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
                     <DollarSign size={16} />
                     Bank Assets Value (₹)
                   </label>
@@ -323,7 +323,7 @@ const LoanApplication = () => {
                     min="0"
                     step="1000"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Savings, FD, investments, etc.</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Savings, FD, investments, etc.</p>
                 </div>
               </div>
             </div>
@@ -333,7 +333,7 @@ const LoanApplication = () => {
               <button
                 type="button"
                 onClick={() => navigate('/dashboard')}
-                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold"
+                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition font-semibold"
               >
                 Cancel
               </button>

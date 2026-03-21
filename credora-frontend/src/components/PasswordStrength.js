@@ -83,7 +83,7 @@ const PasswordStrength = ({ password }) => {
               ) : (
                 <XCircle className="text-gray-400" size={14} />
               )}
-              <span className={isValid ? 'text-green-700' : 'text-gray-500'}>
+              <span className={isValid ? 'text-green-700' : 'text-gray-500 dark:text-gray-400'}>
                 {req.text}
               </span>
             </div>

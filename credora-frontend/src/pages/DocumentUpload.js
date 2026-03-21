@@ -129,15 +129,15 @@ const DocumentUpload = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white dark:bg-gray-800 shadow-sm border-b">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
               <Upload className="text-blue-600" size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Upload Documents</h1>
-              <p className="text-sm text-gray-600">Application #{applicationId}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Upload Documents</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Application #{applicationId}</p>
             </div>
           </div>
         </div>
@@ -151,21 +151,21 @@ const DocumentUpload = () => {
               <div className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-full font-semibold">
                 <CheckCircle size={20} />
               </div>
-              <span className="ml-2 text-sm font-medium text-gray-900">Application</span>
+              <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">Application</span>
             </div>
             <div className="w-16 h-1 bg-blue-500"></div>
             <div className="flex items-center">
               <div className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full font-semibold">
                 2
               </div>
-              <span className="ml-2 text-sm font-medium text-gray-900">Documents</span>
+              <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">Documents</span>
             </div>
             <div className="w-16 h-1 bg-gray-300"></div>
             <div className="flex items-center">
-              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 text-gray-600 rounded-full font-semibold">
+              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 text-gray-600 dark:text-gray-400 rounded-full font-semibold">
                 3
               </div>
-              <span className="ml-2 text-sm font-medium text-gray-500">Review</span>
+              <span className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">Review</span>
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ const DocumentUpload = () => {
               return (
                 <div
                   key={docType.key}
-                  className="bg-white rounded-2xl shadow-lg border-2 border-gray-100 hover:border-blue-300 transition-all p-6"
+                  className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 border-gray-100 dark:border-gray-700 hover:border-blue-300 transition-all p-6"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
@@ -197,11 +197,11 @@ const DocumentUpload = () => {
                         <Icon className="text-blue-600" size={24} />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-900">
+                        <h3 className="font-semibold text-gray-900 dark:text-white">
                           {docType.title}
                           {docType.required && <span className="text-red-500 ml-1">*</span>}
                         </h3>
-                        <p className="text-xs text-gray-500">{docType.subtitle}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{docType.subtitle}</p>
                       </div>
                     </div>
                     {file && (
@@ -225,10 +225,10 @@ const DocumentUpload = () => {
                       <label className="block">
                         <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-all">
                           <Upload className="mx-auto text-gray-400 mb-2" size={32} />
-                          <p className="text-sm font-medium text-gray-700 mb-1">
+                          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Click to upload or drag & drop
                           </p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
                             PDF, JPG, PNG (max 5MB)
                           </p>
                         </div>
@@ -249,7 +249,7 @@ const DocumentUpload = () => {
                           className="w-full h-40 object-cover rounded-lg mb-3"
                         />
                       ) : (
-                        <div className="flex items-center justify-center h-40 bg-white rounded-lg mb-3">
+                        <div className="flex items-center justify-center h-40 bg-white dark:bg-gray-800 rounded-lg mb-3">
                           <File className="text-gray-400" size={48} />
                         </div>
                       )}
@@ -274,7 +274,7 @@ const DocumentUpload = () => {
             <button
               type="button"
               onClick={() => navigate('/dashboard')}
-              className="flex-1 px-6 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-semibold text-lg"
+              className="flex-1 px-6 py-4 border-2 border-gray-300 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition font-semibold text-lg"
             >
               Cancel
             </button>

@@ -215,7 +215,7 @@ const SelfieCapture = ({ onCapture, preview }) => {
             <button
               type="button"
               onClick={retakePhoto}
-              className="px-4 py-2 text-sm bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+              className="px-4 py-2 text-sm bg-white dark:bg-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition"
             >
               Retake
             </button>
@@ -237,8 +237,8 @@ const SelfieCapture = ({ onCapture, preview }) => {
       {!stream && !captured && (
         <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
           <Camera className="mx-auto text-gray-400 mb-4" size={48} />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Capture Live Selfie</h3>
-          <p className="text-sm text-gray-600 mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Capture Live Selfie</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
             Click below to start your camera and capture a live selfie
           </p>
           {!navigator.mediaDevices && (
@@ -334,7 +334,7 @@ const SelfieCapture = ({ onCapture, preview }) => {
             <button
               type="button"
               onClick={stopCamera}
-              className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold"
+              className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition font-semibold"
             >
               Cancel
             </button>

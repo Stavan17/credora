@@ -54,7 +54,7 @@ const AdminReviewDetail = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
           <Loader className="animate-spin text-blue-600 mx-auto mb-4" size={48} />
-          <p className="text-gray-600">Loading application details...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading application details...</p>
         </div>
       </div>
     );
@@ -66,19 +66,19 @@ const AdminReviewDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <div className="bg-white shadow-lg border-b">
+      <div className="bg-white dark:bg-gray-800 shadow-lg border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate('/admin/dashboard')}
-                className="p-2 hover:bg-gray-100 rounded-lg transition"
+                className="p-2 hover:bg-gray-100 dark:bg-gray-800 rounded-lg transition"
               >
                 <ArrowLeft size={24} />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Application Review</h1>
-                <p className="text-sm text-gray-600">ID: #{applicationId}</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Application Review</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400">ID: #{applicationId}</p>
               </div>
             </div>
             {application?.status === 'UNDER_REVIEW' && (
@@ -110,62 +110,62 @@ const AdminReviewDetail = () => {
           {/* Left Column - Application Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Applicant Information */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <User className="text-blue-600" size={24} />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">Applicant Information</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Applicant Information</h2>
               </div>
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Full Name</p>
-                  <p className="text-lg font-semibold text-gray-900">{application?.user?.full_name || 'N/A'}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Full Name</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">{application?.user?.full_name || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Email</p>
-                  <p className="text-lg font-semibold text-gray-900">{application?.user?.email || 'N/A'}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Email</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">{application?.user?.email || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Education</p>
-                  <p className="text-lg font-semibold text-gray-900">{application?.education}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Education</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">{application?.education}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Employment</p>
-                  <p className="text-lg font-semibold text-gray-900">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Employment</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">
                     {application?.self_employed ? 'Self Employed' : 'Employed'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Dependents</p>
-                  <p className="text-lg font-semibold text-gray-900">{application?.no_of_dependents}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Dependents</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">{application?.no_of_dependents}</p>
                 </div>
               </div>
             </div>
 
             {/* Financial Information */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 bg-green-100 rounded-lg">
                   <DollarSign className="text-green-600" size={24} />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">Financial Details</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Financial Details</h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Loan Amount</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Loan Amount</p>
                   <p className="text-2xl font-bold text-blue-600">₹{application?.loan_amount?.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Annual Income</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Annual Income</p>
                   <p className="text-2xl font-bold text-green-600">₹{application?.income_annum?.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Loan Term</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Loan Term</p>
                   <p className="text-2xl font-bold text-purple-600">{application?.loan_term} years</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">CIBIL Score</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">CIBIL Score</p>
                   <p className={`text-2xl font-bold ${
                     application?.cibil_score >= 750 ? 'text-green-600' : 
                     application?.cibil_score >= 650 ? 'text-yellow-600' : 'text-red-600'
@@ -174,30 +174,30 @@ const AdminReviewDetail = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Residential Assets</p>
-                  <p className="text-lg font-semibold text-gray-900">₹{application?.residential_assets_value?.toLocaleString()}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Residential Assets</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">₹{application?.residential_assets_value?.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Bank Assets</p>
-                  <p className="text-lg font-semibold text-gray-900">₹{application?.bank_asset_value?.toLocaleString()}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Bank Assets</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">₹{application?.bank_asset_value?.toLocaleString()}</p>
                 </div>
               </div>
             </div>
 
             {/* Uploaded Documents */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 bg-purple-100 rounded-lg">
                   <FileText className="text-purple-600" size={24} />
                 </div>
-                <h2 className="text-xl font-bold text-gray-900">Uploaded Documents</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Uploaded Documents</h2>
               </div>
               {documents.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No documents uploaded yet</p>
+                <p className="text-gray-500 dark:text-gray-400 text-center py-8">No documents uploaded yet</p>
               ) : (
                 <div className="grid grid-cols-2 gap-4">
                   {documents.map((doc, index) => (
-                    <div key={index} className="border-2 border-gray-200 rounded-xl p-4 hover:border-blue-400 transition">
+                    <div key={index} className="border-2 border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:border-blue-400 transition">
                       {doc.type === 'photo' ? (
                         <div 
                           className="cursor-pointer"
@@ -210,21 +210,21 @@ const AdminReviewDetail = () => {
                           />
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="font-semibold text-gray-900 text-sm">{doc.name}</p>
-                              <p className="text-xs text-gray-500">Applicant Photo</p>
+                              <p className="font-semibold text-gray-900 dark:text-white text-sm">{doc.name}</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">Applicant Photo</p>
                             </div>
                             <Eye className="text-blue-600" size={20} />
                           </div>
                         </div>
                       ) : (
                         <div>
-                          <div className="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center mb-3">
+                          <div className="w-full h-32 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-3">
                             <FileText className="text-gray-400" size={48} />
                           </div>
                           <div className="flex items-center justify-between">
                             <div className="flex-1 min-w-0">
-                              <p className="font-semibold text-gray-900 text-sm truncate">{doc.name}</p>
-                              <p className="text-xs text-gray-500">{doc.type}</p>
+                              <p className="font-semibold text-gray-900 dark:text-white text-sm truncate">{doc.name}</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">{doc.type}</p>
                             </div>
                             <a 
                               href={doc.url} 
@@ -254,9 +254,9 @@ const AdminReviewDetail = () => {
               <div className="text-center">
                 <div className="text-6xl font-bold mb-2">{(approvalProb * 100).toFixed(1)}%</div>
                 <p className="text-blue-100">Approval Probability</p>
-                <div className="mt-4 h-3 bg-white/20 rounded-full overflow-hidden">
+                <div className="mt-4 h-3 bg-white dark:bg-gray-800/20 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-white rounded-full transition-all duration-1000"
+                    className="h-full bg-white dark:bg-gray-800 rounded-full transition-all duration-1000"
                     style={{ width: `${approvalProb * 100}%` }}
                   ></div>
                 </div>
@@ -278,9 +278,9 @@ const AdminReviewDetail = () => {
                 <p className="opacity-90">
                   {fraudScore < 0.3 ? 'Low Risk' : fraudScore < 0.6 ? 'Medium Risk' : 'High Risk'}
                 </p>
-                <div className="mt-4 h-3 bg-white/20 rounded-full overflow-hidden">
+                <div className="mt-4 h-3 bg-white dark:bg-gray-800/20 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-white rounded-full transition-all duration-1000"
+                    className="h-full bg-white dark:bg-gray-800 rounded-full transition-all duration-1000"
                     style={{ width: `${fraudScore * 100}%` }}
                   ></div>
                 </div>
@@ -288,8 +288,8 @@ const AdminReviewDetail = () => {
             </div>
 
             {/* AI Recommendation */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 border-2 border-gray-200">
-              <h3 className="font-bold text-gray-900 mb-4 text-lg">AI Recommendation</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-2 border-gray-200 dark:border-gray-700">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-4 text-lg">AI Recommendation</h3>
               <div className={`p-4 rounded-xl ${
                 application?.final_decision === 'APPROVED' ? 'bg-green-50 border-2 border-green-300' :
                 application?.final_decision === 'REJECTED' ? 'bg-red-50 border-2 border-red-300' :
@@ -333,8 +333,8 @@ const AdminReviewDetail = () => {
                     </div>
                     <h4 className="font-bold text-indigo-900">AI Reasoning (Admin Only)</h4>
                   </div>
-                  <div className="bg-white/70 rounded-lg p-4 border border-indigo-100">
-                    <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans">
+                  <div className="bg-white dark:bg-gray-800/70 rounded-lg p-4 border border-indigo-100">
+                    <pre className="text-sm text-gray-800 dark:text-gray-100 whitespace-pre-wrap font-sans">
                       {application.ai_reasoning}
                     </pre>
                   </div>

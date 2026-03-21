@@ -30,12 +30,16 @@ const Login = () => {
 
     try {
       // Send credentials with 'username' field (backend expects this)
-      await login({
+      const userData = await login({
         username: formData.email,  // Backend uses 'username' field for email
         password: formData.password
       });
       showToast.success('Login successful!');
-      navigate('/dashboard');
+      if (userData.is_admin) {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       console.error('Login error:', err);
       const errorMessage = err.response?.data?.detail || 'Login failed. Please try again.';
@@ -67,7 +71,7 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Email Address
             </label>
             <div className="relative">
@@ -85,7 +89,7 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Password
             </label>
             <div className="relative">
@@ -112,7 +116,7 @@ const Login = () => {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Don't have an account?{' '}
             <Link to="/register" className="text-blue-600 hover:text-blue-700 font-semibold">
               Sign up

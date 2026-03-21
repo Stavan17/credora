@@ -30,7 +30,7 @@ const LoanAnalysis = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <Loader className="animate-spin text-blue-600 mx-auto mb-4" size={48} />
-          <p className="text-gray-600">Analyzing your application...</p>
+          <p className="text-gray-600 dark:text-gray-400">Analyzing your application...</p>
         </div>
       </div>
     );
@@ -67,15 +67,15 @@ const LoanAnalysis = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white dark:bg-gray-800 shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
               <TrendingUp className="text-blue-600" size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Loan Approval Analysis</h1>
-              <p className="text-sm text-gray-600">Application #{applicationId}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Loan Approval Analysis</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Application #{applicationId}</p>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@ const LoanAnalysis = () => {
         ) : (
           <div className="space-y-8">
             {/* Main Score Card */}
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
               {/* Gradient Header */}
               <div className={`bg-gradient-to-r ${getColorClass()} p-8 text-white`}>
                 <div className="text-center">
@@ -107,7 +107,7 @@ const LoanAnalysis = () => {
                   <div className="text-8xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
                     {approvalPercent}%
                   </div>
-                  <p className="text-2xl text-gray-600 font-medium">Approval Probability</p>
+                  <p className="text-2xl text-gray-600 dark:text-gray-400 font-medium">Approval Probability</p>
                 </div>
 
                 {/* Progress Bar */}
@@ -117,10 +117,10 @@ const LoanAnalysis = () => {
                       className={`h-full bg-gradient-to-r ${getColorClass()} transition-all duration-1000 ease-out rounded-full shadow-lg`}
                       style={{ width: `${approvalPercent}%` }}
                     >
-                      <div className="h-full w-full bg-white/20 animate-pulse"></div>
+                      <div className="h-full w-full bg-white dark:bg-gray-800/20 animate-pulse"></div>
                     </div>
                   </div>
-                  <div className="flex justify-between mt-2 text-sm text-gray-500">
+                  <div className="flex justify-between mt-2 text-sm text-gray-500 dark:text-gray-400">
                     <span>0%</span>
                     <span>50%</span>
                     <span>100%</span>
@@ -129,44 +129,44 @@ const LoanAnalysis = () => {
               </div>
 
               {/* Application Details */}
-              <div className="p-8 bg-gray-50 border-t border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-4 text-lg">Application Summary</h3>
+              <div className="p-8 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-4 text-lg">Application Summary</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Loan Amount</p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Loan Amount</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">
                       ₹{data?.loan_amount?.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Annual Income</p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Annual Income</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">
                       ₹{data?.income_annum?.toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">CIBIL Score</p>
-                    <p className="text-lg font-bold text-gray-900">{data?.cibil_score}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">CIBIL Score</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">{data?.cibil_score}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Loan Term</p>
-                    <p className="text-lg font-bold text-gray-900">{data?.loan_term} years</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Loan Term</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">{data?.loan_term} years</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Next Steps Card */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Next Steps</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Next Steps</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
                   <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
                     1
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Fraud Detection Analysis</p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="font-semibold text-gray-900 dark:text-white">Fraud Detection Analysis</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       Review your fraud risk assessment to understand security checks
                     </p>
                   </div>
@@ -176,8 +176,8 @@ const LoanAnalysis = () => {
                     2
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Admin Review</p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="font-semibold text-gray-900 dark:text-white">Admin Review</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       Our team will review your application and documents within 24-48 hours
                     </p>
                   </div>
@@ -187,8 +187,8 @@ const LoanAnalysis = () => {
                     3
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Final Decision</p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="font-semibold text-gray-900 dark:text-white">Final Decision</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       You'll receive notification about the final decision via email and dashboard
                     </p>
                   </div>
@@ -207,7 +207,7 @@ const LoanAnalysis = () => {
               </button>
               <button
                 onClick={() => navigate('/dashboard')}
-                className="px-6 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition font-semibold text-lg"
+                className="px-6 py-4 border-2 border-gray-300 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-900 transition font-semibold text-lg"
               >
                 Back to Dashboard
               </button>

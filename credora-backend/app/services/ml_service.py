@@ -35,8 +35,49 @@ class MLService:
             'luxury_assets_value',
             'bank_asset_value',
             'education',
-            'self_employed'
         ]
+        
+    def retrain_model(self, data_list: list) -> Dict:
+        """Retrain the model on historical DB data and safely reload it into memory"""
+        from sklearn.ensemble import RandomForestClassifier
+        from sklearn.preprocessing import StandardScaler
+        
+        df = pd.DataFrame(data_list)
+        
+        # Build feature matrix X matching exactly what preprocess_features does
+        X = pd.DataFrame()
+        for fname in self.feature_names:
+            if fname == 'education':
+                X[fname] = df['education'].apply(lambda x: 1 if x == 'Graduate' else 0)
+            elif fname == 'self_employed':
+                X[fname] = df['self_employed'].apply(lambda x: 1 if x else 0)
+            else:
+                X[fname] = df[fname].fillna(0)
+                
+        y = df['target']
+        
+        # Train new Scaler
+        new_scaler = StandardScaler()
+        X_scaled = new_scaler.fit_transform(X)
+        
+        # Train new Model
+        new_model = RandomForestClassifier(n_estimators=100, random_state=42)
+        new_model.fit(X_scaled, y)
+        
+        # Save to disk
+        model_dir = "app/ml_models"
+        os.makedirs(model_dir, exist_ok=True)
+        joblib.dump(new_model, os.path.join(model_dir, "loan_model.pkl"))
+        joblib.dump(new_scaler, os.path.join(model_dir, "scaler.pkl"))
+        
+        # Hot reload in memory
+        self.loan_model = new_model
+        self.scaler = new_scaler
+        
+        return {
+            "message": "Model successfully retrained and deployed",
+            "samples_trained": len(X)
+        }
     
     def apply_business_rules(self, application_data: Dict, ml_probability: float) -> Dict:
         """

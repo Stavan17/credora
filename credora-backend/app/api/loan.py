@@ -16,6 +16,7 @@ from app.services.fraud_service import fraud_service
 from app.services.risk_service import risk_service
 from app.services.cibil_service import cibil_service
 from app.services.ocr_service import ocr_service
+from app.api.websocket import manager
 import traceback
 import json
 
@@ -115,94 +116,15 @@ async def process_application(
         
         if not application:
             raise HTTPException(status_code=404, detail="Application not found")
-        
-        # Prepare data for ML & fraud models
-        app_data = {
-            'no_of_dependents': application.no_of_dependents,
-            'income_annum': application.income_annum,
-            'loan_amount': application.loan_amount,
-            'loan_term': application.loan_term,
-            'cibil_score': application.cibil_score,
-            'residential_assets_value': application.residential_assets_value,
-            'commercial_assets_value': application.commercial_assets_value,
-            'luxury_assets_value': application.luxury_assets_value,
-            'bank_asset_value': application.bank_asset_value,
-            'education': application.education,
-            'self_employed': application.self_employed,
-            'user_full_name': application.user.full_name if application.user else None,
-            'user_email': application.user.email if application.user else None
-        }
-        
-        print(f"Processing application {application_id} with data: {app_data}")
-        
-        # 1. Loan Approval Prediction
-        try:
-            loan_result = ml_service.predict_loan_approval(app_data)
-            print(f"✅ Loan prediction result: {loan_result}")
-        except Exception as e:
-            print(f"❌ Error in ML service: {str(e)}")
-            print(traceback.format_exc())
-            raise HTTPException(status_code=500, detail=f"ML prediction failed: {str(e)}")
-        
-        # 2. Fraud Detection (uses application data + OCR'd documents)
-        try:
-            documents = db.query(Document).filter(
-                Document.application_id == application.id
-            ).all()
-            fraud_result = fraud_service.detect_fraud(app_data, documents)
-            print(f"✅ Fraud detection result: {fraud_result}")
-        except Exception as e:
-            print(f"❌ Error in fraud service: {str(e)}")
-            print(traceback.format_exc())
-            raise HTTPException(status_code=500, detail=f"Fraud detection failed: {str(e)}")
-        
-        # 3. Combined Risk Assessment
-        try:
-            risk_result = risk_service.calculate_combined_risk(
-                loan_result['approval_probability'],
-                fraud_result['fraud_score']
-            )
-            print(f"✅ Risk assessment result: {risk_result}")
-        except Exception as e:
-            print(f"❌ Error in risk service: {str(e)}")
-            print(traceback.format_exc())
-            raise HTTPException(status_code=500, detail=f"Risk assessment failed: {str(e)}")
-        
-        # 4. Generate AI reasoning for admin
-        ai_reasoning = _generate_ai_reasoning(
-            loan_result,
-            fraud_result,
-            risk_result,
-            app_data
-        )
-        
-        # Update application with ML recommendations (NOT final decision)
-        application.approval_probability = loan_result['approval_probability']
-        application.fraud_score = fraud_result['fraud_score']
-        application.final_decision = risk_result['final_decision']  # ML recommendation
-        application.ai_reasoning = ai_reasoning  # Store AI reasoning (admin-only)
-        application.status = "UNDER_REVIEW"  # Changed from PROCESSED to UNDER_REVIEW
-        
-        # Save fraud check
-        fraud_check = FraudCheck(
-            application_id=application.id,
-            fraud_score=fraud_result['fraud_score'],
-            is_fraudulent=fraud_result['is_fraudulent'],
-            anomaly_detected=fraud_result['anomaly_detected'],
-            fraud_flags=fraud_result['fraud_flags']
-        )
-        db.add(fraud_check)
-        db.commit()
-        
-        print(f"✅ Application {application_id} processed successfully - Status: UNDER_REVIEW")
-        
+
+        pipeline = _run_processing_pipeline(application, db)
         return {
             "application_id": application.id,
             "status": "UNDER_REVIEW",
-            "ml_recommendation": risk_result['final_decision'],
-            "loan_prediction": loan_result,
-            "fraud_detection": fraud_result,
-            "combined_risk": risk_result,
+            "ml_recommendation": pipeline["risk_result"]['final_decision'],
+            "loan_prediction": pipeline["loan_result"],
+            "fraud_detection": pipeline["fraud_result"],
+            "combined_risk": pipeline["risk_result"],
             "note": "This is an AI recommendation. Final decision pending admin review."
         }
         
@@ -212,6 +134,91 @@ async def process_application(
         print(f"❌ Unexpected error in process_application: {str(e)}")
         print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Processing failed: {str(e)}")
+
+
+def _build_app_data(application: LoanApplication) -> dict:
+    return {
+        'no_of_dependents': application.no_of_dependents,
+        'income_annum': application.income_annum,
+        'loan_amount': application.loan_amount,
+        'loan_term': application.loan_term,
+        'cibil_score': application.cibil_score,
+        'residential_assets_value': application.residential_assets_value,
+        'commercial_assets_value': application.commercial_assets_value,
+        'luxury_assets_value': application.luxury_assets_value,
+        'bank_asset_value': application.bank_asset_value,
+        'education': application.education,
+        'self_employed': application.self_employed,
+        'user_full_name': application.user.full_name if application.user else None,
+        'user_email': application.user.email if application.user else None
+    }
+
+
+def _run_processing_pipeline(application: LoanApplication, db: Session) -> dict:
+    """
+    Runs ML + fraud + combined risk, then persists results on the application and fraud_checks.
+    Safe to call multiple times (overwrites previous fraud check snapshot).
+    """
+    app_data = _build_app_data(application)
+    print(f"Processing application {application.id} with data: {app_data}")
+
+    loan_result = ml_service.predict_loan_approval(app_data)
+    print(f"✅ Loan prediction result: {loan_result}")
+
+    documents = db.query(Document).filter(Document.application_id == application.id).all()
+    fraud_result = fraud_service.detect_fraud(app_data, documents)
+    print(f"✅ Fraud detection result: {fraud_result}")
+
+    # Penalize AI Approval Score based on Fraud Score
+    original_prob = loan_result['approval_probability']
+    fraud_penalty = fraud_result['fraud_score']
+    adjusted_prob = max(0.0, original_prob * (1 - fraud_penalty))
+    loan_result['approval_probability'] = adjusted_prob
+
+    risk_result = risk_service.calculate_combined_risk(
+        loan_result['approval_probability'],
+        fraud_result['fraud_score']
+    )
+    print(f"✅ Risk assessment result: {risk_result}")
+
+    ai_reasoning = _generate_ai_reasoning(
+        loan_result,
+        fraud_result,
+        risk_result,
+        app_data
+    )
+
+    application.approval_probability = loan_result['approval_probability']
+    application.fraud_score = fraud_result['fraud_score']
+    application.final_decision = risk_result['final_decision']
+    application.ai_reasoning = ai_reasoning
+    application.status = "UNDER_REVIEW"
+
+    existing_fraud_check = db.query(FraudCheck).filter(FraudCheck.application_id == application.id).first()
+    if existing_fraud_check:
+        existing_fraud_check.fraud_score = fraud_result['fraud_score']
+        existing_fraud_check.is_fraudulent = fraud_result['is_fraudulent']
+        existing_fraud_check.anomaly_detected = fraud_result['anomaly_detected']
+        existing_fraud_check.fraud_flags = fraud_result['fraud_flags']
+    else:
+        db.add(FraudCheck(
+            application_id=application.id,
+            fraud_score=fraud_result['fraud_score'],
+            is_fraudulent=fraud_result['is_fraudulent'],
+            anomaly_detected=fraud_result['anomaly_detected'],
+            fraud_flags=fraud_result['fraud_flags']
+        ))
+
+    db.commit()
+    print(f"✅ Application {application.id} processed successfully - Status: UNDER_REVIEW")
+
+    return {
+        "app_data": app_data,
+        "loan_result": loan_result,
+        "fraud_result": fraud_result,
+        "risk_result": risk_result,
+        "ai_reasoning": ai_reasoning
+    }
 
 @router.post("/documents/{application_id}")
 async def upload_documents(
@@ -277,8 +284,20 @@ async def upload_documents(
                 'filename': file.filename,
                 'path': file_path
             })
-        
+
         db.commit()
+
+        # Re-run processing after document upload so fraud flags are not stuck as MISSING_*
+        # if the user previously hit "/process" before uploading docs.
+        try:
+            db.refresh(application)
+            _run_processing_pipeline(application, db)
+        except HTTPException:
+            raise
+        except Exception as e:
+            print(f"❌ Error re-processing after document upload: {str(e)}")
+            print(traceback.format_exc())
+            raise HTTPException(status_code=500, detail=f"Documents uploaded, but processing failed: {str(e)}")
         
         return {
             "message": "Documents uploaded successfully",
@@ -466,12 +485,54 @@ async def review_application(
     
     print(f"✅ Admin {admin_user.email} {decision} application #{application_id}")
     
+    # Trigger WebSocket Broadcast
+    try:
+        await manager.send_personal_message(
+            {
+                "type": "APPLICATION_UPDATE", 
+                "application_id": application_id, 
+                "status": decision,
+                "message": f"Your application has been {decision.lower()}."
+            },
+            application.user_id
+        )
+    except Exception as e:
+        print(f"WS error: {e}")
+    
     return {
         "message": f"Application {decision.lower()} successfully",
         "application_id": application.id,
         "status": decision,
         "reviewed_by": admin_user.email
     }
+
+@router.post("/admin/retrain", response_model=dict)
+async def trigger_model_retraining(
+    db: Session = Depends(get_db),
+    admin_user: User = Depends(get_admin_user)
+):
+    """Admin: Retrain the ML model using historical decisions"""
+    from app.services.ml_service import ml_service
+    
+    # Fetch all resolved applications
+    applications = db.query(LoanApplication).filter(
+        LoanApplication.final_decision.in_(["APPROVED", "REJECTED"])
+    ).all()
+    
+    if len(applications) < 10:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Not enough historical data to retrain (found {len(applications)}, minimum 10 needed)"
+        )
+        
+    app_data_list = []
+    for app in applications:
+        app_data = _build_app_data(app)
+        app_data['target'] = 1 if app.final_decision == "APPROVED" else 0
+        app_data_list.append(app_data)
+        
+    result = ml_service.retrain_model(app_data_list)
+    return result
 
 # ============ USER ENDPOINTS ============
 

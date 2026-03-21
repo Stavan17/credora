@@ -68,7 +68,7 @@ const ApplicationResult = () => {
       case 'MANUAL_REVIEW':
         return 'bg-yellow-50 border-yellow-200 text-yellow-800';
       default:
-        return 'bg-gray-50 border-gray-200 text-gray-800';
+        return 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100';
     }
   };
 
@@ -118,7 +118,7 @@ const ApplicationResult = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/dashboard')}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+              className="p-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition"
             >
               <ArrowLeft size={24} className="text-gray-600 dark:text-gray-300" />
             </button>
@@ -166,10 +166,10 @@ const ApplicationResult = () => {
         {/* Scores */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Approval Probability */}
-          <div className="bg-white rounded-xl shadow p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="text-blue-600" size={24} />
-              <h3 className="text-lg font-semibold text-gray-900">Approval Probability</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Approval Probability</h3>
             </div>
             <div className="relative pt-1">
               <div className="flex mb-2 items-center justify-between">
@@ -183,7 +183,7 @@ const ApplicationResult = () => {
                   className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600 transition-all duration-500"
                 ></div>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {application.approval_probability >= 0.9 && '✓ Excellent chance of approval'}
                 {application.approval_probability >= 0.7 && application.approval_probability < 0.9 && '✓ Good chance of approval'}
                 {application.approval_probability >= 0.5 && application.approval_probability < 0.7 && '⚠ Moderate chance'}
@@ -193,10 +193,10 @@ const ApplicationResult = () => {
           </div>
 
           {/* Fraud Risk */}
-          <div className="bg-white rounded-xl shadow p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
             <div className="flex items-center gap-2 mb-4">
               <Shield className="text-red-600" size={24} />
-              <h3 className="text-lg font-semibold text-gray-900">Fraud Risk Score</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Fraud Risk Score</h3>
             </div>
             <div className="relative pt-1">
               <div className="flex mb-2 items-center justify-between">
@@ -210,7 +210,7 @@ const ApplicationResult = () => {
                   className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-600 transition-all duration-500"
                 ></div>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {application.fraud_score < 0.3 && '✓ Low fraud risk detected'}
                 {application.fraud_score >= 0.3 && application.fraud_score < 0.7 && '⚠ Medium fraud risk'}
                 {application.fraud_score >= 0.7 && '✗ High fraud risk detected'}
@@ -220,24 +220,24 @@ const ApplicationResult = () => {
         </div>
 
         {/* Application Details */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-6">Application Details</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Application Details</h3>
           
           {/* Personal Information */}
           <div className="mb-6">
-            <h4 className="text-sm font-semibold text-gray-500 uppercase mb-3">Personal Information</h4>
+            <h4 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3">Personal Information</h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Number of Dependents</p>
-                <p className="text-lg font-semibold text-gray-900">{application.no_of_dependents || 0}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Number of Dependents</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">{application.no_of_dependents || 0}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Education</p>
-                <p className="text-lg font-semibold text-gray-900">{application.education || 'N/A'}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Education</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">{application.education || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Employment Type</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Employment Type</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {application.self_employed ? 'Self-Employed' : 'Salaried'}
                 </p>
               </div>
@@ -246,25 +246,25 @@ const ApplicationResult = () => {
 
           {/* Financial Information */}
           <div className="mb-6">
-            <h4 className="text-sm font-semibold text-gray-500 uppercase mb-3">Financial Information</h4>
+            <h4 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3">Financial Information</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Annual Income</p>
-                <p className="text-lg font-semibold text-gray-900">{formatCurrency(application.income_annum)}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Annual Income</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">{formatCurrency(application.income_annum)}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Loan Amount</p>
-                <p className="text-lg font-semibold text-gray-900">{formatCurrency(application.loan_amount)}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Loan Amount</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">{formatCurrency(application.loan_amount)}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Loan Term</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Loan Term</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {application.loan_term || 0} years
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">CIBIL Score</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-400">CIBIL Score</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {application.cibil_score || 'N/A'}
                   {application.cibil_score >= 750 && <span className="text-green-600 text-sm ml-2">Excellent</span>}
                   {application.cibil_score >= 650 && application.cibil_score < 750 && <span className="text-blue-600 text-sm ml-2">Good</span>}
@@ -277,29 +277,29 @@ const ApplicationResult = () => {
 
           {/* Asset Values */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-500 uppercase mb-3">Asset Information</h4>
+            <h4 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3">Asset Information</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Residential Assets</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Residential Assets</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {formatCurrency(application.residential_assets_value || 0)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Commercial Assets</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Commercial Assets</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {formatCurrency(application.commercial_assets_value || 0)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Luxury Assets</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Luxury Assets</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {formatCurrency(application.luxury_assets_value || 0)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Bank Assets</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Bank Assets</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">
                   {formatCurrency(application.bank_asset_value || 0)}
                 </p>
               </div>
@@ -307,9 +307,9 @@ const ApplicationResult = () => {
           </div>
 
           {/* Total Assets */}
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center">
-              <p className="text-sm font-semibold text-gray-600">Total Assets Value</p>
+              <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">Total Assets Value</p>
               <p className="text-xl font-bold text-blue-600">
                 {formatCurrency(
                   (application.residential_assets_value || 0) +

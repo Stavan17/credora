@@ -30,7 +30,7 @@ const FraudAnalysis = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center">
         <div className="text-center">
           <Loader className="animate-spin text-purple-600 mx-auto mb-4" size={48} />
-          <p className="text-gray-600">Analyzing fraud risk...</p>
+          <p className="text-gray-600 dark:text-gray-400">Analyzing fraud risk...</p>
         </div>
       </div>
     );
@@ -79,15 +79,15 @@ const FraudAnalysis = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white dark:bg-gray-800 shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-purple-100 rounded-lg">
               <Shield className="text-purple-600" size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Fraud Detection Analysis</h1>
-              <p className="text-sm text-gray-600">Application #{applicationId}</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Fraud Detection Analysis</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Application #{applicationId}</p>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@ const FraudAnalysis = () => {
         ) : (
           <div className="space-y-8">
             {/* Main Risk Card */}
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
               {/* Gradient Header */}
               <div className={`bg-gradient-to-r ${getGradientClass()} p-8 text-white`}>
                 <div className="text-center">
@@ -119,8 +119,8 @@ const FraudAnalysis = () => {
                   <div className="text-8xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
                     {fraudPercent}%
                   </div>
-                  <p className="text-2xl text-gray-600 font-medium">Fraud Risk Score</p>
-                  <p className="text-sm text-gray-500 mt-2">Lower is better</p>
+                  <p className="text-2xl text-gray-600 dark:text-gray-400 font-medium">Fraud Risk Score</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Lower is better</p>
                 </div>
 
                 {/* Progress Bar */}
@@ -130,10 +130,10 @@ const FraudAnalysis = () => {
                       className={`h-full bg-gradient-to-r ${getGradientClass()} transition-all duration-1000 ease-out rounded-full shadow-lg`}
                       style={{ width: `${fraudPercent}%` }}
                     >
-                      <div className="h-full w-full bg-white/20 animate-pulse"></div>
+                      <div className="h-full w-full bg-white dark:bg-gray-800/20 animate-pulse"></div>
                     </div>
                   </div>
-                  <div className="flex justify-between mt-2 text-sm text-gray-500">
+                  <div className="flex justify-between mt-2 text-sm text-gray-500 dark:text-gray-400">
                     <span>0% (Safe)</span>
                     <span>50%</span>
                     <span>100% (High Risk)</span>
@@ -142,8 +142,8 @@ const FraudAnalysis = () => {
               </div>
 
               {/* Risk Meter Visual */}
-              <div className="p-8 bg-gray-50 border-t border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-6 text-lg text-center">Risk Assessment</h3>
+              <div className="p-8 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-6 text-lg text-center">Risk Assessment</h3>
                 <div className="flex items-center justify-between max-w-2xl mx-auto">
                   <div className="text-center flex-1">
                     <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-2 ${
@@ -154,7 +154,7 @@ const FraudAnalysis = () => {
                     <p className={`font-semibold ${risk.color === 'green' ? 'text-green-700' : 'text-gray-400'}`}>
                       Low Risk
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">0-30%</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">0-30%</p>
                   </div>
                   <div className="text-center flex-1">
                     <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-2 ${
@@ -165,7 +165,7 @@ const FraudAnalysis = () => {
                     <p className={`font-semibold ${risk.color === 'yellow' ? 'text-yellow-700' : 'text-gray-400'}`}>
                       Medium Risk
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">30-60%</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">30-60%</p>
                   </div>
                   <div className="text-center flex-1">
                     <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-2 ${
@@ -176,18 +176,18 @@ const FraudAnalysis = () => {
                     <p className={`font-semibold ${risk.color === 'red' ? 'text-red-700' : 'text-gray-400'}`}>
                       High Risk
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">60-100%</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">60-100%</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Verification Checks */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Security Checks</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-gray-700">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Security Checks</h3>
               <div className="space-y-4">
                 {fraudFlags.map((check, index) => (
-                  <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
+                  <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
                     <div className="flex-shrink-0">
                       {!check.detected ? (
                         <CheckCircle className="text-green-600" size={24} />
@@ -196,8 +196,8 @@ const FraudAnalysis = () => {
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-900">{check.label}</p>
-                      <p className="text-sm text-gray-600 mt-1">{check.description}</p>
+                      <p className="font-semibold text-gray-900 dark:text-white">{check.label}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{check.description}</p>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                       !check.detected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'

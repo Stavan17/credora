@@ -189,7 +189,7 @@ const AdminAnalytics = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate('/admin/dashboard')}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
+                className="p-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg transition"
               >
                 <ArrowLeft className="text-gray-600 dark:text-gray-300" size={24} />
               </button>
