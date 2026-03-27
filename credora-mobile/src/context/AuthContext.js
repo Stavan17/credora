@@ -51,12 +51,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    // Simulate generic response for now, real link would go to authService.register
     try {
-       // mock implementation
-       const newUser = { email: userData.email, full_name: userData.full_name, is_admin: false };
-       setUser(newUser);
-       return newUser;
+       const response = await authService.register(userData);
+       return response;
     } catch (err) { throw err; }
   };
 

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import tw from 'twrnc';
 import api from '../api/config';
-import { LogOut, PlusCircle } from 'lucide-react-native';
+import { LogOut, PlusCircle, Moon } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const DashboardScreen = () => {
   const { user, logout } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const navigation = useNavigation();
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,15 +42,20 @@ const DashboardScreen = () => {
       {/* Header */}
       <View style={tw`flex-row justify-between items-center px-6 pb-4 border-b border-gray-200 dark:border-gray-800`}>
         <View>
-          <Text style={tw`text-2xl font-black text-gray-900 dark:text-white`}>Credora {user?.is_admin ? 'Admin' : ''}</Text>
-          <Text style={tw`text-sm font-medium text-gray-500`}>Signed in as {user?.full_name}</Text>
+          <Text style={tw`text-2xl font-black text-gray-900 dark:text-white`}>Credora Dashboard</Text>
+          <Text style={tw`text-sm font-medium text-gray-500`}>Welcome back, {user?.full_name}</Text>
         </View>
-        <TouchableOpacity onPress={logout} style={tw`bg-red-100 p-3 rounded-full shadow-sm`}>
-          <LogOut color="#dc2626" size={20} />
-        </TouchableOpacity>
+        <View style={tw`flex-row items-center gap-2`}>
+          <TouchableOpacity onPress={toggleTheme} style={tw`bg-gray-200 dark:bg-gray-800 p-3 rounded-full shadow-sm`}>
+            <Moon color={isDarkMode ? '#facc15' : '#374151'} size={20} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={logout} style={tw`bg-red-100 dark:bg-red-900/30 p-3 rounded-full shadow-sm ml-2`}>
+            <LogOut color="#dc2626" size={20} />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <ScrollView contentContainerStyle={tw`p-6 h-full`}>
+      <ScrollView contentContainerStyle={tw`p-6 pb-24`}>
         
         {/* Metric Cards */}
         <View style={tw`flex-row flex-wrap justify-between mb-6`}>
@@ -78,6 +85,14 @@ const DashboardScreen = () => {
               <Text style={tw`text-white font-bold ml-1`}>New</Text>
             </TouchableOpacity>
           )}
+          {user?.is_admin && (
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('AdminAnalytics')}
+              style={tw`bg-indigo-600 px-5 py-2 rounded-full flex-row items-center shadow-lg shadow-indigo-500/30`}
+            >
+              <Text style={tw`text-white font-extrabold text-sm tracking-wide`}>Analytics</Text>
+            </TouchableOpacity>
+          )}
         </View>
         
         {loading ? (
@@ -104,6 +119,13 @@ const DashboardScreen = () => {
                    AI Score: {app.approval_probability ? (app.approval_probability * 100).toFixed(1) + '%' : 'N/A'}
                  </Text>
               </View>
+
+              <TouchableOpacity 
+                onPress={() => navigation.navigate(user?.is_admin ? 'AdminReviewDetail' : 'ApplicationResult', { applicationId: app.id })} 
+                style={tw`mt-4 bg-gray-50 dark:bg-gray-700 py-3 rounded-xl border border-gray-100 dark:border-gray-600 items-center justify-center`}
+              >
+                  <Text style={tw`text-gray-700 dark:text-gray-200 font-bold text-sm tracking-wide`}>View Application Profile</Text>
+              </TouchableOpacity>
             </View>
           ))
         )}

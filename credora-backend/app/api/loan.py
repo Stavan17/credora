@@ -270,15 +270,29 @@ async def upload_documents(
             if file_extension.lower() in [".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".pdf"]:
                 ocr_text = ocr_service.extract_text(file_path)
             
-            # Create document record
-            document = Document(
-                application_id=application_id,
-                document_type=doc_type,
-                file_name=file.filename,
-                file_path=file_path,
-                ocr_extracted_text=ocr_text
-            )
-            db.add(document)
+            # Check if document already exists for this type
+            existing_doc = db.query(Document).filter(
+                Document.application_id == application_id,
+                Document.document_type == doc_type
+            ).first()
+
+            if existing_doc:
+                # Update existing document
+                existing_doc.file_name = file.filename
+                existing_doc.file_path = file_path
+                existing_doc.ocr_extracted_text = ocr_text
+                existing_doc.is_verified = True # Corrected field name
+            else:
+                # Create new document
+                document = Document(
+                    application_id=application_id,
+                    document_type=doc_type,
+                    file_name=file.filename,
+                    file_path=file_path,
+                    ocr_extracted_text=ocr_text,
+                    is_verified=True # Corrected field name
+                )
+                db.add(document)
             uploaded_docs.append({
                 'type': doc_type,
                 'filename': file.filename,

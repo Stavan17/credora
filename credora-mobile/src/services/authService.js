@@ -2,6 +2,10 @@ import api from '../api/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const authService = {
+  register: async (userData) => {
+    const response = await api.post('/api/auth/register', userData);
+    return response.data;
+  },
   login: async (credentials) => {
     // Send as form data (OAuth2 format)
     const formData = new URLSearchParams();

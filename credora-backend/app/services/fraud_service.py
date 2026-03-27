@@ -50,7 +50,8 @@ class FraudService:
                 if doc_type not in doc_text_by_type:
                     flags.append(f"MISSING_{doc_type.upper()}")
                 else:
-                    if len(doc_text_by_type[doc_type]) < 40:
+                    # Skip OCR text length check for photos (they aren't expected to have text)
+                    if doc_type != "photo" and len(doc_text_by_type[doc_type]) < 40:
                         flags.append(f"DOC_OCR_WEAK_{doc_type.upper()}")
 
             # Identity proof name mismatch
