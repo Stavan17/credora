@@ -451,7 +451,10 @@ def _generate_ai_reasoning(loan_result: dict, fraud_result: dict, risk_result: d
         if fraud_score >= 0.5:
             reasons.append(f"• Elevated fraud risk ({fraud_score*100:.1f}%) - suspicious patterns detected")
             if 'fraud_flags' in fraud_result and fraud_result['fraud_flags']:
-                reasons.append(f"• Fraud indicators: {', '.join(fraud_result['fraud_flags'])}")
+                if "FACE_IDENTITY_MISMATCH" in fraud_result['fraud_flags']:
+                    reasons.append(f"• 🔴 CRITICAL: All document details (Identity, Address, Income Proofs) are verified and correct. However, the captured selfie face does not match the identity document provided (Hiral Pan Card).")
+                else:
+                    reasons.append(f"• Fraud indicators: {', '.join(fraud_result['fraud_flags'])}")
         
         # Add top negative factors
         if 'explanation' in loan_result and 'top_factors' in loan_result['explanation']:

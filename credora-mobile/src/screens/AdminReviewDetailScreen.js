@@ -66,6 +66,18 @@ const AdminReviewDetailScreen = () => {
          </View>
       </View>
 
+      {/* AI Reasoning Section */}
+      {appData?.ai_reasoning && (
+        <View style={tw`bg-blue-50 dark:bg-blue-900/30 rounded-3xl p-6 border border-blue-100 dark:border-blue-800 mb-6`}>
+           <Text style={tw`text-blue-800 dark:text-blue-300 font-black text-lg mb-3`}>AI Reasoning & Risk Analysis</Text>
+           <View style={tw`bg-white/50 dark:bg-gray-800/50 rounded-2xl p-4`}>
+              <Text style={tw`text-gray-700 dark:text-gray-200 font-medium leading-5 text-sm`}>
+                {appData.ai_reasoning}
+              </Text>
+           </View>
+        </View>
+      )}
+
       <Text style={tw`text-xl font-bold mb-4 text-gray-800 dark:text-gray-200`}>Verification Documents</Text>
       {documents.length === 0 ? <Text style={tw`text-gray-400 italic mb-6 font-medium`}>No hardware attachments sourced.</Text> : (
         <View style={tw`flex-row flex-wrap justify-between mb-6`}>
